@@ -28,15 +28,6 @@ export default function useSearchBookLocation(csvData: any) {
     const [search, setSearch] = useState<(value: string) => void>();
     const [ready, setReady] = useState(false);
 
-    // const search = (value: string) => {
-    //     const re = new RegExp(value.toLowerCase());
-    //     const result = database.filter((item) => item.country.toLowerCase().search(re) !== -1);
-
-    //     console.log('searching...' + database.length + '   >' + value);
-    //     console.log(result[0]);
-    //     setSearchResult(result);
-    // };
-
     async function readCsv(csvData: any) {
         return await loadLocalResource(csvData)
     }
@@ -64,14 +55,12 @@ export default function useSearchBookLocation(csvData: any) {
                         comment: item[11]
                     };
                 });
-console.log('>> ' + parsedData.length);
+                
                 setDatabase(parsedData);
                 setSearch((value: string) => {
                     const re = new RegExp(value?.toLowerCase());
                     const result = database.filter((item) => item.country.toLowerCase().search(re) !== -1);
-            
-                    console.log('searching...' + database.length + '   >' + value);
-                    console.log(result[0]);
+
                     setSearchResult(result);
                     setReady(true);
                 });

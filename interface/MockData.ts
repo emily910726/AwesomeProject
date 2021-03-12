@@ -10,7 +10,8 @@ interface MockData {
     department: string,
     company: string,
     country: string,
-    comment: string
+    comment: string,
+    image: any
 }
 
 export default MockData;
