@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Modal, Pressable, Image } from 'react-native';
 
-import MockData from '../../interface/MockData';
+import MockData from '../../interface/Book';
 
 interface Props {
   isOpen: boolean,
@@ -27,14 +27,24 @@ export default function BookDetailModal(props: Props) {
               <Image source={props.dataItem.image}
                 style={{ width: 64, height: 64, paddingTop: 10, paddingBottom: 10 }} />
             </View>
-            <Text style={styles.title}>{`${props.dataItem.firstName} ${props.dataItem.lastName}`}</Text>
-            <Text style={styles.caption}>{props.dataItem.country}</Text>
-            <Text style={styles.caption}>{props.dataItem.comment}</Text>
+            <Text style={styles.title}>{`${props.dataItem.title}`}</Text>
+            <Text style={styles.caption}>{`作者： ${props.dataItem.author}`}</Text>
+            <Text style={styles.caption}>{`图书位置： ${props.dataItem.location}`}</Text>
+            <Text style={styles.caption}>{`ISBN: ${props.dataItem.ISBN}`}</Text>
+            <Text style={styles.caption}>{`单价: ${props.dataItem.price}`}</Text>
+            <Text style={styles.caption}>{`索书号: ${props.dataItem.searchNo}`}</Text>
+            <Text style={styles.caption}>{`出版社: ${props.dataItem.publisher}`}</Text>
+            <Text style={styles.caption}>{`出版年: ${props.dataItem.publishYear}`}</Text>
+            <Text style={styles.caption}>{`单元编号: ${props.dataItem.UnitNo}`}</Text>
+            <Text style={styles.caption}>{`条码号: ${props.dataItem.barCode}`}</Text>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[styles.button]}
               onPress={props.onClose}
             >
-              <Text style={styles.textStyle}>Hide Modal</Text>
+              <Image
+                source= {require('./../../assets/images/cross.png') }
+                style={{ width: 16, height: 16 }}
+              />
             </Pressable>
           </View>
         </View>
@@ -68,16 +78,12 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    borderRadius: 20,
+    position: 'absolute',
     padding: 10,
-    elevation: 2,
-    marginTop: 20
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
-  buttonClose: {
-    backgroundColor: "#2196F3",
+    marginTop: 20,
+    right: 4,
+    top: -16,
+    opacity: 0.4
   },
   textStyle: {
     color: "white",

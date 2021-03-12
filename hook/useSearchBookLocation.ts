@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import loadLocalResource from "react-native-local-resource";
 import Papa from "papaparse";
 
-import MockData from '../interface/MockData';
+import MockData from '../interface/Book';
 
 interface CSV {
     data: any[][]

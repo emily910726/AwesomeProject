@@ -5,12 +5,12 @@ import SearchTextInput from './components/SearchTextInput';
 import ResultTile from './components/ResultTile';
 
 import loadLocalResource from "react-native-local-resource";
-import csvData from '../data/mock_data_complete.csv';
+import csvData from '../data/booklist_test.csv';
 import Papa from "papaparse";
 
 // import useSearchBookLocation from '../hook/useSearchBookLocation';
 
-import MockData from '../interface/MockData';
+import Book from '../interface/Book';
 
 interface CSV {
     data: any[][],
@@ -24,13 +24,13 @@ async function readSampleText() {
 export default function MainScreen({ navigation }) {
     // const [searchResult, search, ready] = useSearchBookLocation(csvData);
 
-    const [database, setDatabase] = useState<Array<MockData>>([]);
-    const [searchResult, setSearchResult] = useState<MockData[]>([]);
+    const [database, setDatabase] = useState<Array<Book>>([]);
+    const [searchResult, setSearchResult] = useState<Book[]>([]);
 
     // const formatSearchResult = (result: MockData) => result === undefined ? 'Not found!' : `${result.id}: ${result.firstName} ${result.lastName}, from ${result.country}`;
     function searchCsv(value: string) {
         const re = new RegExp(value.toLowerCase());
-        const result = value !== "" ? database.filter((item) => item.country.toLowerCase().search(re) !== -1) : [];
+        const result = value !== "" ? database.filter((item) => item.title.toLowerCase().search(re) !== -1) : [];
         
         setSearchResult(result);
     };
@@ -42,22 +42,20 @@ export default function MainScreen({ navigation }) {
                 const data: CSV = Papa.parse(csvContent);
                 data.data.splice(0, 1)
                 const dataWithoutHeader = data.data;
-                const parsedData: Array<MockData> = dataWithoutHeader.map((item) => {
+                const parsedData: Array<Book> = dataWithoutHeader.map((item) => {
                     const imageIdx = getRandomInt(imageList.length);
 
                     return {
-                        id: item[0],
-                        firstName: item[1],
-                        lastName: item[2],
-                        email: item[3],
-                        givenName: item[4],
-                        dateTime: item[5],
-                        address: item[6],
-                        description: item[7],
-                        department: item[8],
-                        company: item[9],
-                        country: item[10],
-                        comment: item[11],
+                        searchNo: item[0],
+                        title: item[1],
+                        author: item[2],
+                        publisher: item[3],
+                        publishYear: item[4],
+                        price: item[5],
+                        barCode: item[6],
+                        ISBN: item[7],
+                        UnitNo: item[8],
+                        location: item[9],
                         image: imageList[imageIdx]
                     };
                 });
@@ -83,7 +81,7 @@ export default function MainScreen({ navigation }) {
                     <FlatList
                         data={searchResult}
                         renderItem={({ item }) => {
-                            return (<ResultTile navigation={navigation} key={item.id} item={item} image={item.image} />);
+                            return (<ResultTile navigation={navigation} key={item.title} item={item} image={item.image} />);
                         }}
                     /> :
                     <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>Not Found!</Text>
