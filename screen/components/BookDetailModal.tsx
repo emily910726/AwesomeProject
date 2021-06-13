@@ -28,14 +28,14 @@ export default function BookDetailModal(props: Props) {
                 style={{ width: 64, height: 64, paddingTop: 10, paddingBottom: 10 }} />
             </View>
             <Text style={styles.title}>{`${props.dataItem.title}`}</Text>
-            <Text style={styles.caption}>{`作者： ${props.dataItem.author}`}</Text>
-            <Text style={styles.caption}>{`图书位置： ${props.dataItem.location}`}</Text>
+            <Text style={styles.caption}>{`作者: ${props.dataItem.author}`}</Text>
+            <Text style={styles.caption}>{`图书位置：${props.dataItem.location}`}</Text>
             <Text style={styles.caption}>{`ISBN: ${props.dataItem.ISBN}`}</Text>
             <Text style={styles.caption}>{`单价: ${props.dataItem.price}`}</Text>
             <Text style={styles.caption}>{`索书号: ${props.dataItem.searchNo}`}</Text>
             <Text style={styles.caption}>{`出版社: ${props.dataItem.publisher}`}</Text>
             <Text style={styles.caption}>{`出版年: ${props.dataItem.publishYear}`}</Text>
-            <Text style={styles.caption}>{`单元编号: ${props.dataItem.UnitNo}`}</Text>
+            <Text style={styles.caption}>{`单元编号: ${props.dataItem.unitNo}`}</Text>
             <Text style={styles.caption}>{`条码号: ${props.dataItem.barCode}`}</Text>
             <Pressable
               style={[styles.button]}

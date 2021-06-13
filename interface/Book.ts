@@ -7,7 +7,7 @@ interface Book {
     price: string,
     barCode: string,
     ISBN: string,
-    UnitNo: string,
+    unitNo: string,
     location: string,
     image:any
 }

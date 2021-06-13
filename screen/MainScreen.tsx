@@ -4,9 +4,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native';
 import SearchTextInput from './components/SearchTextInput';
 import ResultTile from './components/ResultTile';
 
-import loadLocalResource from "react-native-local-resource";
-import csvData from '../data/booklist_test.csv';
-import Papa from "papaparse";
+import csvData from '../data/booklist.json';
 
 // import useSearchBookLocation from '../hook/useSearchBookLocation';
 
@@ -17,47 +15,26 @@ interface CSV {
     navigation?: any
 }
 
-async function readSampleText() {
-    return await loadLocalResource(csvData)
-}
-
 export default function MainScreen({ navigation }) {
     // const [searchResult, search, ready] = useSearchBookLocation(csvData);
 
     const [database, setDatabase] = useState<Array<Book>>([]);
     const [searchResult, setSearchResult] = useState<Book[]>([]);
 
-    // const formatSearchResult = (result: MockData) => result === undefined ? 'Not found!' : `${result.id}: ${result.firstName} ${result.lastName}, from ${result.country}`;
     function searchCsv(value: string) {
         const re = new RegExp(value.toLowerCase());
         const result = value !== "" ? database.filter((item) => item.title.toLowerCase().search(re) !== -1) : [];
-        
+
         setSearchResult(result);
     };
 
     useEffect(() => {
         (async function () {
             try {
-                const csvContent = await readSampleText();
-                const data: CSV = Papa.parse(csvContent);
-                data.data.splice(0, 1)
-                const dataWithoutHeader = data.data;
-                const parsedData: Array<Book> = dataWithoutHeader.map((item) => {
+                let parsedData = csvData as Book[];
+                parsedData = parsedData.map((item) => {
                     const imageIdx = getRandomInt(imageList.length);
-
-                    return {
-                        searchNo: item[0],
-                        title: item[1],
-                        author: item[2],
-                        publisher: item[3],
-                        publishYear: item[4],
-                        price: item[5],
-                        barCode: item[6],
-                        ISBN: item[7],
-                        UnitNo: item[8],
-                        location: item[9],
-                        image: imageList[imageIdx]
-                    };
+                    return { ...item, image: imageList[imageIdx] };
                 });
 
                 setDatabase(parsedData);
@@ -72,7 +49,7 @@ export default function MainScreen({ navigation }) {
             <View style={styles.searchBoxContainer}>
                 {
                     database.length > 0 ?
-                        (<SearchTextInput keyword="" onChange={searchCsv} placeholder="Type the title of the book..." />)
+                        (<SearchTextInput keyword="" onChange={searchCsv} placeholder="请输入书名" />)
                         : (<Text>Loading...</Text>)
                 }
             </View>
@@ -81,10 +58,11 @@ export default function MainScreen({ navigation }) {
                     <FlatList
                         data={searchResult}
                         renderItem={({ item }) => {
-                            return (<ResultTile navigation={navigation} key={item.title} item={item} image={item.image} />);
+                            return (<ResultTile navigation={navigation} item={item} image={item.image} />);
                         }}
+                        keyExtractor={(item) => item.barCode }
                     /> :
-                    <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>Not Found!</Text>
+                    <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>未找到匹配记录</Text>
                 }
 
             </View>
