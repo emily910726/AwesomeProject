@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import SearchTextInput from './components/SearchTextInput';
 import ResultTile from './components/ResultTile';
-
+import SearchCategoryModal from './components/SearchCategoryModal';
 import csvData from '../data/booklist.json';
 
 // import useSearchBookLocation from '../hook/useSearchBookLocation';
@@ -15,15 +16,32 @@ interface CSV {
     navigation?: any
 }
 
+const SearchTypeLabel = {
+    title: '书名',
+    author: '作者',
+    publisher: '出版社',
+    barCode: '条码号',
+    ISBN: 'ISBN'
+}
+
 export default function MainScreen({ navigation }) {
     // const [searchResult, search, ready] = useSearchBookLocation(csvData);
 
     const [database, setDatabase] = useState<Array<Book>>([]);
     const [searchResult, setSearchResult] = useState<Book[]>([]);
+    const [searchType, setSearchType] = useState('title');
+    const [showModal, setShowModal] = useState(false);
 
-    function searchCsv(value: string) {
+    const searchCsv = (value: string, type: string) => {
         const re = new RegExp(value.toLowerCase());
-        const result = value !== "" ? database.filter((item) => item.title.toLowerCase().search(re) !== -1) : [];
+        let result = [];
+        if (value !== "") {
+            if (type) {
+                result = database.filter((item) => item[type].toLowerCase().search(re) !== -1);
+            } else {
+                result = database.filter((item) => item[searchType].toLowerCase().search(re) !== -1);
+            }
+        }
 
         setSearchResult(result);
     };
@@ -44,12 +62,35 @@ export default function MainScreen({ navigation }) {
         })();
     }, []);
 
+    const navigateToBarcodeScanner = () => {
+        navigation.navigate('BarcodeScanner', { handleBarCodeScanned, navigation })
+    }
+
+    const handleBarCodeScanned = ({ data }) => {
+        let type = 'barCode';
+        if (data.length >= 13) type = 'ISBN';
+        searchCsv(data, type);
+    };
+
+    const onSearchTypeSelected = (type) => {
+        setSearchType(type)
+        searchCsv('', type);
+        setShowModal(false);
+    }
+
     return (
         <View style={styles.container}>
+            <SearchCategoryModal isOpen={showModal} onClose={() => setShowModal(false)} select={onSearchTypeSelected} selected={searchType} />
             <View style={styles.searchBoxContainer}>
                 {
                     database.length > 0 ?
-                        (<SearchTextInput keyword="" onChange={searchCsv} placeholder="请输入书名" />)
+                        (
+                        <>
+                            <Button title={SearchTypeLabel[searchType]} onPress={() => setShowModal(true)} />
+                            <SearchTextInput keyword="" onChange={(value) => searchCsv(value, searchType)} placeholder={`请输入${SearchTypeLabel[searchType]}`} type={searchType} />
+                            <MaterialCommunityIcons name="barcode-scan" size={48} color="black" onPress={navigateToBarcodeScanner} />
+                        </>
+                        )
                         : (<Text>Loading...</Text>)
                 }
             </View>
@@ -64,9 +105,7 @@ export default function MainScreen({ navigation }) {
                     /> :
                     <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>未找到匹配记录</Text>
                 }
-
             </View>
-
         </View>
     );
 }
@@ -80,8 +119,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     searchBoxContainer: {
-        flex: 1,
-        backgroundColor: "lightgray"
+        flex: 0.6,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: 'lightgray'
     },
     searchResultcontainer: {
         flex: 7,

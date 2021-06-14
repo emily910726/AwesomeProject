@@ -5,6 +5,8 @@
     "ios": "react-native run-ios",
     "web": "expo start --web",
     "start": "react-native start",
+    "build": "cd android && gradlew assembleRelease",
+    "device": "adb -s UGM0217106002244 reverse tcp:8081 tcp:8081",
     "test": "jest"
   },
   "dependencies": {
@@ -12,6 +14,7 @@
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
     "expo": "~40.0.0",
+    "expo-barcode-scanner": "^10.1.2",
     "expo-splash-screen": "~0.8.1",
     "expo-updates": "~0.4.1",
     "lodash": "^4.17.21",

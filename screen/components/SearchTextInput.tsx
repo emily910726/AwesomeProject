@@ -1,17 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View, TextInput, TextPropTypes } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { TextInput } from 'react-native';
 import { debounce } from "lodash";
 
 interface Props {
     placeholder?: string,
     onChange?(value: string): void,
-    keyword: string
+    keyword: string,
+    type: string
 }
 
 export default function SearchTextInput(props: Props) {
     const [keyword, setKeyword] = useState(props.keyword);
 
-    const onSearch = useCallback(debounce(props.onChange, 500), []);
+    const onSearch = useCallback(debounce(props.onChange, 500), [props.type]);
     const onSearchBoxChanged = (value: string) => {
       setKeyword(value);
       onSearch(value);
