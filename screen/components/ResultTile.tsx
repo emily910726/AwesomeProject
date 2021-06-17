@@ -19,7 +19,7 @@ export default function ResultTile(props: Props) {
             // props.navigation.navigate('Details');
         }} underlayColor="white">
             <View style={styles.tile}>
-                <BookDetailModal isOpen={showModal} onClose={() => setShowModal(false)} dataItem={props.item} />
+                <BookDetailModal navigate={props.navigation.navigate} isOpen={showModal} onClose={() => setShowModal(false)} dataItem={props.item} />
                 <View style={styles.thumbnail}>
                     <Image source={props.image}
                         style={{ width: 64, height: 64, paddingTop: 10, paddingBottom: 10 }} />

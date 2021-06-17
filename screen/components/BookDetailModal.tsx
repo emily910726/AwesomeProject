@@ -7,7 +7,8 @@ import MockData from '../../interface/Book';
 interface Props {
   isOpen: boolean,
   onClose(): void,
-  dataItem: MockData
+  dataItem: MockData,
+  navigate(path: string, param: any): void
 }
 
 export default function BookDetailModal(props: Props) {
@@ -37,6 +38,15 @@ export default function BookDetailModal(props: Props) {
             <Text style={styles.caption}>{`出版年: ${props.dataItem.publishYear}`}</Text>
             <Text style={styles.caption}>{`单元编号: ${props.dataItem.unitNo}`}</Text>
             <Text style={styles.caption}>{`条码号: ${props.dataItem.barCode}`}</Text>
+            <TouchableOpacity 
+                style={{margin: 20, alignSelf: 'center'}}
+                onPress={() => { 
+                  props.navigate('Order', { });
+                  props.onClose();
+                }}
+            >
+                <Text>Reserve</Text>
+            </TouchableOpacity>
             <Pressable
               style={[styles.button]}
               onPress={props.onClose}

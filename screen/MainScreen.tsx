@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Button, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import SearchTextInput from './components/SearchTextInput';
@@ -8,8 +8,10 @@ import SearchCategoryModal from './components/SearchCategoryModal';
 import csvData from '../data/booklist.json';
 
 // import useSearchBookLocation from '../hook/useSearchBookLocation';
+import Toast from 'react-native-toast-message';
 
 import Book from '../interface/Book';
+import { Alert } from 'react-native';
 
 interface CSV {
     data: any[][],
@@ -25,8 +27,6 @@ const SearchTypeLabel = {
 }
 
 export default function MainScreen({ navigation }) {
-    // const [searchResult, search, ready] = useSearchBookLocation(csvData);
-
     const [database, setDatabase] = useState<Array<Book>>([]);
     const [searchResult, setSearchResult] = useState<Book[]>([]);
     const [searchType, setSearchType] = useState('title');
@@ -45,6 +45,13 @@ export default function MainScreen({ navigation }) {
 
         setSearchResult(result);
     };
+
+    // useEffect(() => {
+    //     Toast.show({
+    //         text1: 'Hello',
+    //         text2: 'This is some something '
+    //     });
+    // }, []);
 
     useEffect(() => {
         (async function () {
@@ -78,6 +85,18 @@ export default function MainScreen({ navigation }) {
         setShowModal(false);
     }
 
+    const navigateToOrder = () => {
+         navigation.navigate('Order', { showToast })
+    }
+
+    const showToast = ()=> {
+        navigation.goBack();
+        Toast.show({
+            text1: '缺书登记成功'
+        });
+    }
+
+
     return (
         <View style={styles.container}>
             <SearchCategoryModal isOpen={showModal} onClose={() => setShowModal(false)} select={onSearchTypeSelected} selected={searchType} />
@@ -103,7 +122,15 @@ export default function MainScreen({ navigation }) {
                         }}
                         keyExtractor={(item) => item.barCode }
                     /> :
-                    <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>未找到匹配记录</Text>
+                    <>
+                        <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>未找到匹配记录</Text>
+                        <TouchableOpacity 
+                            style={{margin: 20, alignSelf: 'center'}}
+                            onPress={navigateToOrder} 
+                        >
+                            <Text>缺书登记</Text>
+                        </TouchableOpacity>
+                    </>
                 }
             </View>
         </View>

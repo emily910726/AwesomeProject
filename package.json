@@ -6,7 +6,7 @@
     "web": "expo start --web",
     "start": "react-native start",
     "build": "cd android && gradlew assembleRelease",
-    "device": "adb -s UGM0217106002244 reverse tcp:8081 tcp:8081",
+    "device": "adb -s ${device_id} reverse tcp:8081 tcp:8081",
     "test": "jest"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "react-native-reanimated": "~1.13.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "~2.15.2",
+    "react-native-toast-message": "^1.4.9",
     "react-native-unimodules": "~0.12.0",
     "react-native-web": "~0.13.12"
   },
