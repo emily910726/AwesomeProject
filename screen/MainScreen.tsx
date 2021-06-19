@@ -89,13 +89,12 @@ export default function MainScreen({ navigation }) {
          navigation.navigate('Order', { showToast })
     }
 
-    const showToast = ()=> {
+    const showToast = (mes:string) => {
         navigation.goBack();
         Toast.show({
-            text1: '缺书登记成功'
+            text1: mes
         });
     }
-
 
     return (
         <View style={styles.container}>
@@ -118,17 +117,17 @@ export default function MainScreen({ navigation }) {
                     <FlatList
                         data={searchResult}
                         renderItem={({ item }) => {
-                            return (<ResultTile navigation={navigation} item={item} image={item.image} />);
+                            return (<ResultTile showToast={showToast} navigation={navigation} item={item} image={item.image} />);
                         }}
                         keyExtractor={(item) => item.barCode }
                     /> :
                     <>
                         <Text style={{margin: 20, alignSelf: 'center', fontSize: 24, fontWeight: 'bold'}}>未找到匹配记录</Text>
                         <TouchableOpacity 
-                            style={{margin: 20, alignSelf: 'center'}}
+                            style={styles.orderButton}
                             onPress={navigateToOrder} 
                         >
-                            <Text>缺书登记</Text>
+                            <Text style = {{color:'white'}}>缺书登记</Text>
                         </TouchableOpacity>
                     </>
                 }
@@ -154,6 +153,19 @@ const styles = StyleSheet.create({
     searchResultcontainer: {
         flex: 7,
         backgroundColor: 'gray',
+    },
+    orderButton:{
+        margin: 20, 
+        alignSelf: 'center',
+        borderColor: "red",
+        backgroundColor: '#3e92d6',
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        padding: 16,
+        paddingLeft: 32,
+        paddingRight: 32
     }
 });
 

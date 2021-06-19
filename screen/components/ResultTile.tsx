@@ -5,9 +5,10 @@ import Book from '../../interface/Book';
 import BookDetailModal from './BookDetailModal';
 
 interface Props {
-    item: Book,
-    navigation: any,
+    item: Book
+    navigation: any
     image: any
+    showToast(ff: string): void
 }
 
 export default function ResultTile(props: Props) {
@@ -19,7 +20,7 @@ export default function ResultTile(props: Props) {
             // props.navigation.navigate('Details');
         }} underlayColor="white">
             <View style={styles.tile}>
-                <BookDetailModal navigate={props.navigation.navigate} isOpen={showModal} onClose={() => setShowModal(false)} dataItem={props.item} />
+                <BookDetailModal showToast={props.showToast} navigate={props.navigation.navigate} isOpen={showModal} onClose={() => setShowModal(false)} dataItem={props.item} />
                 <View style={styles.thumbnail}>
                     <Image source={props.image}
                         style={{ width: 64, height: 64, paddingTop: 10, paddingBottom: 10 }} />

@@ -9,6 +9,7 @@ interface Props {
   onClose(): void,
   dataItem: MockData,
   navigate(path: string, param: any): void
+  showToast(ff: string): void
 }
 
 export default function BookDetailModal(props: Props) {
@@ -39,13 +40,13 @@ export default function BookDetailModal(props: Props) {
             <Text style={styles.caption}>{`单元编号: ${props.dataItem.unitNo}`}</Text>
             <Text style={styles.caption}>{`条码号: ${props.dataItem.barCode}`}</Text>
             <TouchableOpacity 
-                style={{margin: 20, alignSelf: 'center'}}
+                style={styles.borrowButton}
                 onPress={() => { 
-                  props.navigate('Order', { });
+                  props.navigate('Borrow', { showToast: props.showToast });
                   props.onClose();
                 }}
             >
-                <Text>Reserve</Text>
+                <Text style={{color:"white"}}>在线借阅</Text>
             </TouchableOpacity>
             <Pressable
               style={[styles.button]}
@@ -115,5 +116,18 @@ const styles = StyleSheet.create({
   caption: {
     fontSize: 12,
     alignSelf: "flex-start"
-  }
+  },
+  borrowButton:{
+    margin: 20, 
+    alignSelf: 'center',
+    borderColor: "red",
+    backgroundColor: '#3e92d6',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    padding: 16,
+    paddingLeft: 32,
+    paddingRight: 32
+}
 });

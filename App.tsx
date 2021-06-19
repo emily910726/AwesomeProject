@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './screen/MainScreen';
 import BarcodeScannerScreen from './screen/BarcodeScannerScreen';
 import BookOrderScreen from './screen/BookOrderScreen';
+import BookBorrowScreen from './screen/BookBorrowScreen';
 import Toast from 'react-native-toast-message';
 
 const Stack = createStackNavigator();
@@ -21,6 +22,7 @@ export default function App() {
           <Stack.Screen name="Main" component={MainScreen} />
           <Stack.Screen name="BarcodeScanner" component={BarcodeScannerScreen} />
           <Stack.Screen name="Order" component={BookOrderScreen} />
+          <Stack.Screen name="Borrow" component={BookBorrowScreen} />
         </Stack.Navigator>
       </NavigationContainer>
        <Toast ref={(ref) => Toast.setRef(ref)} />
